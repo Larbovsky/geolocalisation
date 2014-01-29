@@ -3,42 +3,43 @@
   <head>
     <title>Exemple Geolocation</title>
 
-    <script type="text/javascript" charset="utf-8" src="phonegap-1.3.0.js"></script>
+    <script type="text/javascript" charset="utf-8" src="file:///C|/Users/tesson_j/Documents/GitHub/geolocalisation/phonegap-1.3.0.js"></script>
     <script type="text/javascript" charset="utf-8">
 
     // Attendre que PhoneGap soit prêt
     //
     document.addEventListener("deviceready", onDeviceReady, false);
 
+    var watchID = null;
+
     // PhoneGap est prêt
     //
     function onDeviceReady() {
-        navigator.geolocation.getCurrentPosition(onSuccess, onError);
+        // Interrogation toutes les 3 secondes
+        var options = { frequency: 3000 };
+        watchID = navigator.geolocation.watchPosition(onSuccess, onError, options);
     }
 
-    // Fonction de callback onSuccess, reçoit un objet Position
+    // Fonction de callback onSuccess
     //
     function onSuccess(position) {
         var element = document.getElementById('geolocation');
-        element.innerHTML = 'Latitude : '                + position.coords.latitude          + '<br/>' +
-                            'Longitude : '               + position.coords.longitude         + '<br/>' +
-                            'Altitude : '                + position.coords.altitude          + '<br/>' +
-                            'Précision : '               + position.coords.accuracy          + '<br/>' +
-                            'Précision de l altitude : ' + position.coords.altitudeAccuracy  + '<br/>' +
-                            'Direction : '               + position.coords.heading           + '<br/>' +
-                            'Vitesse : '                 + position.coords.speed             + '<br/>';
+        element.innerHTML = 'Latitude : '  + position.coords.latitude      + '<br />' +
+                            'Longitude : ' + position.coords.longitude     + '<br />' +
+                            '<hr />'      + element.innerHTML;
     }
 
     // Fonction de callback onError, reçoit un objet PositionError
     //
     function onError(error) {
-        alert('code : '    + error.code    + '\n' +
-              'message : ' + error.message + '\n');
+      alert('code : '    + error.code    + '\n' +
+            'message : ' + error.message + '\n');
     }
 
     </script>
   </head>
   <body>
-    <p id="geolocation">Recherche de géolocalisation...</p>
+    <p id="geolocation">Écoute de la géolocalisation...</p>
+    <button onclick="clearWatch();">Arrêter l'écoute</button>     
   </body>
 </html>
