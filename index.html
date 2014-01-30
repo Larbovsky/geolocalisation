@@ -61,13 +61,13 @@
 			$(document).ready(function() 
 			{ 
 				// execute 
-				(function(position) 
+				(function(/*position*/) 
 				{ // map options 
 					var options = 
 					{ 
 						zoom: 50,
-						//center: new google.maps.LatLng(50.650, 3.083),
-						center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude), 
+						center: new google.maps.LatLng(50.650, 3.083),
+						//center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude), 
 						// centered US
 						mapTypeId: google.maps.MapTypeId.TERRAIN,
 						mapTypeControl: false
@@ -80,22 +80,18 @@
 					var lngSpan = northEast.lng() - southWest.lng();
 					var latSpan = northEast.lat() - southWest.lat();
 					// set multiple marker 
-					for (var i = 0; i < 1; i++) 
-					{ 
+					//for (var i = 0; i < 1; i++) 
+					//{ 
 						// init markers 
 						//var marker = new google.maps.Marker({ position: new google.maps.LatLng(southWest.lat() + latSpan * Math.random(), southWest.lng() + lngSpan * Math.random()), map: map, title: 'Click Me ' + i });
-						if (i == 0)
-							var marker = new google.maps.Marker({ position: new google.maps.LatLng(position.coords.latitude + 0.005, position.coords.longitude + 0.005), map: map, title: 'Click Me ' + i });
-						else if (i == 1)
-							var marker = new google.maps.Marker({ position: new google.maps.LatLng(50.600, 3.083), map: map, title: 'Click Me ' + i });
-						else if (i == 2)
-							var marker = new google.maps.Marker({ position: new google.maps.LatLng(50.700, 3.083), map: map, title: 'Click Me ' + i });
+					var marker = new google.maps.Marker({ position: new google.maps.LatLng(50.650 + 0.005, 3.083 + 0.005), map: map, title: 'Click Me ' + 0 });
 						// process multiple info windows
 						(function(marker, i) 
 						{
 							// add click event
-							google.maps.event.addListener(marker, 'click', function() { infowindow = new google.maps.InfoWindow({ content: 'Hello, World!!' }); infowindow.open(map, marker); }); })(marker, i); } })(); 
-					}); 
+							google.maps.event.addListener(marker, 'click', function() { infowindow = new google.maps.InfoWindow({ content: 'Hello, World!!' }); infowindow.open(map, marker); }); })(marker, i); //} 
+							})(); 
+				}); 
 		</script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script>
 		<script> jQuery(window).ready(function(){ jQuery("#btnInit").click(initiate_watchlocation); jQuery("#btnStop").click(stop_watchlocation); });
