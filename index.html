@@ -60,14 +60,46 @@
 		<script type="text/javascript"> // check DOM Ready 
 			$(document).ready(function() 
 			{ 
+			
+				var watchProcess = null;
+				function /*initiate_watchlocation*/() 
+				{ 
+					if (watchProcess == null) 
+					{ 
+						watchProcess = navigator.geolocation.watchPosition(carte, handle_errors,{enableHighAccuracy:true}); 
+					} 
+				}
+				function handle_errors(error) 
+				{ 
+					switch(error.code) 
+					{ 
+						case error.PERMISSION_DENIED: alert("user did not share geolocation data"); break;
+						case error.POSITION_UNAVAILABLE: alert("could not detect current position"); break;
+						case error.TIMEOUT: alert("retrieving position timedout"); break;
+						default: alert("unknown error"); break; 
+					} 
+				}
+				/*function handle_geolocation_query(position) 
+				{ 
+					var text = "Latitude: " + position.coords.latitude 
+					+ "<br/>" + "Longitude: " + position.coords.longitude 
+					+ "<br/>" + "Accuracy: " + position.coords.accuracy 
+					+ "m<br/>" + "Time: " + new Date(position.timestamp); 
+					jQuery("#info").html(text);
+					var image_url = "http://maps.google.com/maps/api/staticmap?sensor=false&center=" + position.coords.latitude 
+					+ ',' + position.coords.longitude 
+					+ "&zoom=14&size=300x400&markers=color:blue|label:S|" + position.coords.latitude 
+					+ ',' + position.coords.longitude;
+					jQuery("#map").remove(); jQuery(document.body).append( jQuery(document.createElement("img")).attr("src", image_url).attr('id','map') ); 
+				}*/
 				// execute 
-				(function(/*position*/) 
+				(function carte(position) 
 				{ // map options 
 					var options = 
 					{ 
 						zoom: 50,
-						center: new google.maps.LatLng(50.650, 3.083),
-						//center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude), 
+						//center: new google.maps.LatLng(50.650, 3.083),
+						center: new google.maps.LatLng(position.coords.latitude, position.coords.longitude), 
 						// centered US
 						mapTypeId: google.maps.MapTypeId.TERRAIN,
 						mapTypeControl: false
@@ -79,23 +111,20 @@
 					var northEast = new google.maps.LatLng(34.052234, -118.243685);
 					var lngSpan = northEast.lng() - southWest.lng();
 					var latSpan = northEast.lat() - southWest.lat();
-					// set multiple marker 
-					//for (var i = 0; i < 1; i++) 
-					//{ 
-						// init markers 
-						//var marker = new google.maps.Marker({ position: new google.maps.LatLng(southWest.lat() + latSpan * Math.random(), southWest.lng() + lngSpan * Math.random()), map: map, title: 'Click Me ' + i });
 					var marker = new google.maps.Marker({ position: new google.maps.LatLng(50.650 + 0.005, 3.083 + 0.005), map: map, title: 'Click Me ' + 0 });
-						// process multiple info windows
-						(function(marker, i) 
-						{
-							// add click event
-							google.maps.event.addListener(marker, 'click', function() { infowindow = new google.maps.InfoWindow({ content: 'Hello, World!!' }); infowindow.open(map, marker); }); })(marker, i); //} 
-							})(); 
+					(function(marker, i) 
+					{
+						// add click event
+						google.maps.event.addListener(marker, 'click', function() { infowindow = new google.maps.InfoWindow({ content: 'Hello, World!!' }); infowindow.open(map, marker); }); })(marker, i);
+					})(); 
 				}); 
 		</script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script>
 		<script> jQuery(window).ready(function(){ jQuery("#btnInit").click(initiate_watchlocation); jQuery("#btnStop").click(stop_watchlocation); });
-			var watchProcess = null;
+			
+			
+			
+			
 			function initiate_watchlocation() { if (watchProcess == null) { watchProcess = navigator.geolocation.watchPosition(handle_geolocation_query, handle_errors, {enableHighAccuracy:true}); } }
 			function stop_watchlocation() { if (watchProcess != null) { navigator.geolocation.clearWatch(watchProcess); watchProcess = null; } }
 			function handle_errors(error) { switch(error.code) { case error.PERMISSION_DENIED: alert("user did not share geolocation data"); break;
