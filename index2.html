@@ -1,0 +1,33 @@
+<!DOCTYPE html> <html> <head> <meta name="apple-mobile-web-app-capable" content="yes" /> <meta name="apple-mobile-web-app-status-bar-style" content="black" /> <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> <link rel="apple-touch-icon-precomposed" href="custom_icon_precomposed.png"/> <link rel="apple-touch-startup-image" href="apple-touch-icon-precomposed.png"> <meta charset="utf-8"> <title>jQuery Mobile Web App</title> <link href="jquery.mobile-1.0.min.css" rel="stylesheet" type="text/css"/> <script src="jquery-1.6.4.min.js" type="text/javascript"></script> <script src="jquery.mobile-1.0.min.js" type="text/javascript"></script> <script type="text/javascript" charset="utf-8" src="phonegap.js"></script> <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script><script> jQuery(window).ready(function(){ jQuery("#btnInit").click(initiate_watchlocation); jQuery("#btnStop").click(stop_watchlocation); });
+
+var watchProcess = null;
+
+function initiate_watchlocation() { if (watchProcess == null) { watchProcess = navigator.geolocation.watchPosition(handle_geolocation_query, handle_errors, {enableHighAccuracy:true}); } }
+
+function stop_watchlocation() { if (watchProcess != null) { navigator.geolocation.clearWatch(watchProcess); watchProcess = null; } }
+
+function handle_errors(error) { switch(error.code) { case error.PERMISSION_DENIED: alert("user did not share geolocation data"); break;
+
+case error.POSITION_UNAVAILABLE: alert("could not detect current position"); break;
+
+case error.TIMEOUT: alert("retrieving position timedout"); break;
+
+default: alert("unknown error"); break; } }
+
+function handle_geolocation_query(position) { var text = "Latitude: " + position.coords.latitude + "<br/>" + "Longitude: " + position.coords.longitude + "<br/>" + "Accuracy: " + position.coords.accuracy + "m<br/>" + "Time: " + new Date(position.timestamp); jQuery("#info").html(text);
+
+var image_url = "http://maps.google.com/maps/api/staticmap?sensor=false&center=" + position.coords.latitude + ',' + position.coords.longitude + "&zoom=14&size=300x400&markers=color:blue|label:S|" + position.coords.latitude + ',' + position.coords.longitude;
+
+jQuery("#map").remove(); jQuery(document.body).append( jQuery(document.createElement("img")).attr("src", image_url).attr('id','map') ); } </script> </head> <body>
+
+<div data-role="page" id="page"> <div data-role="header"> <h1>Page One</h1> </div> <div data-role="content"> <ul data-role="listview"> <li><a href="#page2">Page Two</a></li> <li><a href="#page3">Page Three</a></li> <li><a href="#page4">Page Four</a></li> </ul> </div> <div data-role="footer"> <h4>Page Footer</h4> </div> </div>
+
+<div data-role="page" id="page2"> <div data-role="header"> <h1>Page Two</h1> </div> <div data-role="content"> <ul data-role="listview"> <li><a href="#page">retour</a></li> </ul> <div> <button id="btnInit" >Monitor my location</button>
+
+<button id="btnStop" >Stop monitoring</button> </div> <div id="info"></div> </div> <div data-role="footer"> <h4>Page Footer</h4> </div> </div>
+
+<div data-role="page" id="page3"> <div data-role="header"> <h1>Page Three</h1> </div> <div data-role="content"> Content </div> <div data-role="footer"> <h4>Page Footer</h4> </div> </div>
+
+<div data-role="page" id="page4"> <div data-role="header"> <h1>Page Four</h1> </div> <div data-role="content"> Content </div> <div data-role="footer"> <h4>Page Footer</h4> </div> </div>
+
+</body> </html>

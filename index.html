@@ -1,33 +1,72 @@
-<!DOCTYPE html> <html> <head> <meta name="apple-mobile-web-app-capable" content="yes" /> <meta name="apple-mobile-web-app-status-bar-style" content="black" /> <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" /> <link rel="apple-touch-icon-precomposed" href="custom_icon_precomposed.png"/> <link rel="apple-touch-startup-image" href="apple-touch-icon-precomposed.png"> <meta charset="utf-8"> <title>jQuery Mobile Web App</title> <link href="jquery.mobile-1.0.min.css" rel="stylesheet" type="text/css"/> <script src="jquery-1.6.4.min.js" type="text/javascript"></script> <script src="jquery.mobile-1.0.min.js" type="text/javascript"></script> <script type="text/javascript" charset="utf-8" src="phonegap.js"></script> <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script><script> jQuery(window).ready(function(){ jQuery("#btnInit").click(initiate_watchlocation); jQuery("#btnStop").click(stop_watchlocation); });
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width">
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>jQuery Google Maps Plugin</title>
+      <link rel="stylesheet" href="mapapp.css" type="text/css">
 
-var watchProcess = null;
+	<script type="text/javascript" charset="utf-8" src="mapapp.js"></script>
+	</head>
+  <body>
+	<div data-role="page" data-theme="c" id="page-home">
+	<div data-role="header" data-theme="d" data-nobackbtn="true">
+	<h1>Map Route Sample App</h1>
+	</div>
+	<h1 style="text-align:center;color:#49b;">Cylon Apps, Inc.</h1>
+	<div data-role="content" id="contenthome">
 
-function initiate_watchlocation() { if (watchProcess == null) { watchProcess = navigator.geolocation.watchPosition(handle_geolocation_query, handle_errors, {enableHighAccuracy:true}); } }
+		<div class="ui-grid-a">
+		<div class="ui-block-a"><div id="map_square"></div></div>
+		<div class="ui-block-b"><p><strong>Tap on the map to see route and driving directions to this location.</strong></p></div>
+		</div><!-- /grid-a -->
+					
+		<p>The sample text and buttons on this page are here as an example of a web app that includes a map and live 
+		directions to that location.<br><p>
+		<div data-role="controlgroup" data-theme="a" data-type="horizontal">
+			<a href="#page-map" data-role=button data-icon="info">Info</a>
+			<a href="#page-map" data-role=button data-icon="star">Map</a>
+			<a href="#page-map" data-role=button data-icon="home">Loc</a>
+		</div>
+	</div><!-- /content -->
 
-function stop_watchlocation() { if (watchProcess != null) { navigator.geolocation.clearWatch(watchProcess); watchProcess = null; } }
+	<div data-role="footer" data-position="fixed">
+		<h5>Maps created with Google Maps and<br><a href="http://code.google.com/p/jquery-ui-map/">jQuery Google Maps Plugin</a></h5>
+	</div><!-- /footer -->	
+	</div><!-- /page-home -->
 
-function handle_errors(error) { switch(error.code) { case error.PERMISSION_DENIED: alert("user did not share geolocation data"); break;
+	<div data-role="page" data-theme="c" data-fullscreen="true" id="page-map">
 
-case error.POSITION_UNAVAILABLE: alert("could not detect current position"); break;
+	<div data-role="content" id="map-content">
+		<div id="map_canvas"></div>
+	</div><!-- /content -->
+	
+	<div data-role="footer" data-theme="d" data-position="fixed">
+	<div data-role="navbar">
+	<ul>
+    	<li><a href="#page-home">Home</a></li>
+    	<li><a href="#page-map" class="refresh">Refresh</a></li>
+    	<li><a href="#page-dir">Directions</a></li>
+	</ul>
+	</div><!-- /navbar -->
+	</div><!-- /footer -->
+	</div><!-- /page-map -->
 
-case error.TIMEOUT: alert("retrieving position timedout"); break;
+	<div data-role="page" data-theme="c" data-fullscreen="true" id="page-dir">
 
-default: alert("unknown error"); break; } }
+	<div data-role="content">
+		<div id="dir_panel"></div>
+	</div><!-- /content -->
 
-function handle_geolocation_query(position) { var text = "Latitude: " + position.coords.latitude + "<br/>" + "Longitude: " + position.coords.longitude + "<br/>" + "Accuracy: " + position.coords.accuracy + "m<br/>" + "Time: " + new Date(position.timestamp); jQuery("#info").html(text);
+	<div data-role="footer" data-theme="d" data-position="fixed">
+	<div data-role="navbar">
+		<ul>
+    	<li><a href="#page-home">Home</a></li>
+    	<li><a href="#page-map">Map</a></li>
+		</ul>
+	</div><!-- /navbar -->
+	</div><!-- /footer -->
+	</div><!-- /page-dir -->
 
-var image_url = "http://maps.google.com/maps/api/staticmap?sensor=false&center=" + position.coords.latitude + ',' + position.coords.longitude + "&zoom=14&size=300x400&markers=color:blue|label:S|" + position.coords.latitude + ',' + position.coords.longitude;
-
-jQuery("#map").remove(); jQuery(document.body).append( jQuery(document.createElement("img")).attr("src", image_url).attr('id','map') ); } </script> </head> <body>
-
-<div data-role="page" id="page"> <div data-role="header"> <h1>Page One</h1> </div> <div data-role="content"> <ul data-role="listview"> <li><a href="#page2">Page Two</a></li> <li><a href="#page3">Page Three</a></li> <li><a href="#page4">Page Four</a></li> </ul> </div> <div data-role="footer"> <h4>Page Footer</h4> </div> </div>
-
-<div data-role="page" id="page2"> <div data-role="header"> <h1>Page Two</h1> </div> <div data-role="content"> <ul data-role="listview"> <li><a href="#page">retour</a></li> </ul> <div> <button id="btnInit" >Monitor my location</button>
-
-<button id="btnStop" >Stop monitoring</button> </div> <div id="info"></div> </div> <div data-role="footer"> <h4>Page Footer</h4> </div> </div>
-
-<div data-role="page" id="page3"> <div data-role="header"> <h1>Page Three</h1> </div> <div data-role="content"> Content </div> <div data-role="footer"> <h4>Page Footer</h4> </div> </div>
-
-<div data-role="page" id="page4"> <div data-role="header"> <h1>Page Four</h1> </div> <div data-role="content"> Content </div> <div data-role="footer"> <h4>Page Footer</h4> </div> </div>
-
-</body> </html>
+  </body>
+</html>
