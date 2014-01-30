@@ -39,11 +39,13 @@
 					var lngSpan = northEast.lng() - southWest.lng();
 					var latSpan = northEast.lat() - southWest.lat();
 					// set multiple marker 
-					for (var i = 0; i < 50; i++) 
+					for (var i = 0; i < 1; i++) 
 					{ 
 						// init markers 
 						//var marker = new google.maps.Marker({ position: new google.maps.LatLng(southWest.lat() + latSpan * Math.random(), southWest.lng() + lngSpan * Math.random()), map: map, title: 'Click Me ' + i });
 						var marker = new google.maps.Marker({ position: new google.maps.LatLng(50.650, 3.083), map: map, title: 'Click Me ' + i });
+						var marker = new google.maps.Marker({ position: new google.maps.LatLng(50.600, 3.083), map: map, title: 'Click Me ' + i });
+						var marker = new google.maps.Marker({ position: new google.maps.LatLng(50.700, 3.083), map: map, title: 'Click Me ' + i });
 						// process multiple info windows
 						(function(marker, i) 
 						{
